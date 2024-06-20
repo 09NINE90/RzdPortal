@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <link rel="stylesheet" href="style.css">
+    <script th:src="@{/js/anime.min.js}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</head>
+
+<body>
+
+<div class="nav">
+
+    <div class="container">
+        <div th:if="${#authorization.expression('hasRole(''ROLE_INITIATOR'')')}" class="menu">
+            <div class="menu_item"><a href='/rzd/portal/home' data-item='главная'>главная</a></div>
+            <div class="menu_item"><a href='#' data-item='товары'>товары</a></div>
+            <div class="menu_item"><a href='#' data-item='услуги'>услуги</a></div>
+            <div class="menu_item"><a href='#' data-item='задачи'>задачи</a></div>
+            <div class="menu_item"><a href='/rzd/portal/user/logout' data-item='выйти'>выйти</a></div>
+        </div>
+
+        <div class="menu-small">
+            <div class="menu_small_item"><a href='/rzd/portal/home' data-item='главная'>главная</a></div>
+            <div class="menu_small_item"><a href='#' data-item='товары'>товары</a></div>
+            <div class="menu_small_item"><a href='#' data-item='услуги'>услуги</a></div>
+            <div class="menu_small_item"><a href='#' data-item='задачи'>задачи</a></div>
+            <div class="menu_small_item"><a href='/rzd/portal/user/logout' data-item='выйти'>выйти</a></div>
+
+        </div>
+        <div th:if="${#authorization.expression('hasRole(''ROLE_INITIATOR'')')}" class="menu_small_icon">
+            <div class="stick"></div>
+            <div class="stick"></div>
+            <div class="stick"></div>
+        </div>
+
+    </div>
+
+</div>
+<div class="profile">
+    <h2>Главная <a href='/rzd/portal/user/logout' data-item='выйти' th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">выйти</a></h2>
+    <div class="contact">
+        <p>Имя: <span th:text="${firstName}"></span></p>
+        <p>Фамилия: <span th:text="${lastName}"></span></p>
+        <p>Должность: <span th:text="${post}"></span></p>
+    </div>
+    <div class="add_btn" th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}">
+        <a href='/api/v1/createPhysicalParameters' data-item='Добавить данные в таблицу'>Добавить данные в таблицу</a>
+    </div>
+    <div class="table-container">
+        <table th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}">
+            <thead>
+            <tr>
+                <th>Вес (кг)</th>
+                <th>Обхват ноги (см)</th>
+                <th>Обхват руки (см)</th>
+                <th>Обхват бедер (см)</th>
+                <th>Обхват талии (см)</th>
+                <th>Обхват грудной клетки (см)</th>
+                <th>Дата</th>
+                <!-- Добавьте другие колонки по необходимости -->
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="physicalParameters : ${userPhysicalParametersList}">
+                <td class="column-with" th:text="${physicalParameters.weight}"></td>
+                <td class="column-with" th:text="${physicalParameters.legGirth}"></td>
+                <td class="column-with" th:text="${physicalParameters.armCircumference}"></td>
+                <td class="column-with" th:text="${physicalParameters.hipCircumference}"></td>
+                <td class="column-with" th:text="${physicalParameters.waistCircumference}"></td>
+                <td class="column-with" th:text="${physicalParameters.chestCircumference}"></td>
+                <td class="column-with" th:text="${#dates.format(physicalParameters.date, 'dd/MM/yyyy')}"></td>
+                <!-- Добавьте другие ячейки по необходимости -->
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="add_btn" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+        <a href='/rzd/portal/create' data-item='Добавить пользователя'>Добавить пользователя</a>
+    </div>
+    <div class="table-container">
+        <table th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+            <thead>
+            <tr>
+                <th>Имя</th>
+                <th>Фамилия</th>
+                <th>Email</th>
+                <th>Телефон</th>
+                <th>Информация</th>
+                <!-- Добавьте другие колонки по необходимости -->
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${usersList}">
+                <td class="column-with" th:text="${user.firstName}"></td>
+                <td class="column-with" th:text="${user.lastName}"></td>
+                <td class="column-with" th:text="${user.userName}"></td>
+                <td class="column-with" th:text="${user.phoneNumber}"></td>
+                <td class="column-with" ><a th:href="@{'/user/' + ${user.id}}"><span>Перейти</span></a>/<a th:href="@{'/user/delete/' + ${user.id}}"><span>Удалить</span></a></td>
+                <!-- Добавьте другие ячейки по необходимости -->
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<script>
+    let condition = true;
+
+    function forward() {
+        anime({
+            targets: '.menu-small',
+            translateX: ['-100%', '0'],
+            easing: 'easeInOutQuad',
+            direction: 'alternate',
+            duration: 500,
+            loop: false
+        });
+
+        condition = false
+    }
+
+    function backward() {
+        anime({
+            targets: '.menu-small',
+            translateX: ['0', '-100%'],
+            easing: 'easeInOutQuad',
+            direction: 'alternate',
+            duration: 500,
+            loop: false
+        });
+
+        condition = true
+    }
+
+    $('.menu_small_icon').click(function () {
+        if (condition) {
+            forward();
+        } else {
+            backward();
+        }
+    });
+
+    let start = 0;
+    let end = 0;
+    $('.container').on('touchstart', function (event) {
+        start = event.originalEvent.touches[0].pageX;
+    });
+    $('.container').on('touchend', function (event) {
+        end = event.originalEvent.changedTouches[0].pageX;
+        if (end - start >= 100 && condition) {
+            forward();
+        } else if (start - end >= 100 && !condition) {
+            backward();
+        }
+
+    });
+</script>
+</body>
+</html>
+
