@@ -54,30 +54,33 @@
     <div class="add_btn" th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}">
         <a href='/api/v1/createPhysicalParameters' data-item='Добавить данные в таблицу'>Добавить данные в таблицу</a>
     </div>
+    <form class="form" method="post" th:action="@{/rzd/portal/upload}" enctype="multipart/form-data" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+        <div class="inputBox">
+            <input type="file" name="file" accept=".xls,.xlsx"/>
+            <button type="submit">Загрузить</button>
+        </div>
+    </form>
     <div class="table-container">
-        <table th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}">
+        <table th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
             <thead>
             <tr>
-                <th>Вес (кг)</th>
-                <th>Обхват ноги (см)</th>
-                <th>Обхват руки (см)</th>
-                <th>Обхват бедер (см)</th>
-                <th>Обхват талии (см)</th>
-                <th>Обхват грудной клетки (см)</th>
-                <th>Дата</th>
+                <th>Код товара</th>
+                <th>Короткое название</th>
+                <th>Маркировка</th>
+                <th>Параметры</th>
+                <th>Производитель</th>
+<!--                <th>Обхват грудной клетки (см)</th>-->
+<!--                <th>Дата</th>-->
                 <!-- Добавьте другие колонки по необходимости -->
             </tr>
             </thead>
             <tbody>
-            <tr th:each="physicalParameters : ${userPhysicalParametersList}">
-                <td class="column-with" th:text="${physicalParameters.weight}"></td>
-                <td class="column-with" th:text="${physicalParameters.legGirth}"></td>
-                <td class="column-with" th:text="${physicalParameters.armCircumference}"></td>
-                <td class="column-with" th:text="${physicalParameters.hipCircumference}"></td>
-                <td class="column-with" th:text="${physicalParameters.waistCircumference}"></td>
-                <td class="column-with" th:text="${physicalParameters.chestCircumference}"></td>
-                <td class="column-with" th:text="${#dates.format(physicalParameters.date, 'dd/MM/yyyy')}"></td>
-                <!-- Добавьте другие ячейки по необходимости -->
+            <tr th:each="product : ${productList}">
+                <td class="column-with" th:text="${product.productId}"></td>
+                <td class="column-with" th:text="${product.productNameShort}"></td>
+                <td class="column-with" th:text="${product.productBrand}"></td>
+                <td class="column-with" th:text="${product.productSize}"></td>
+                <td class="column-with" th:text="${product.productVector}"></td>
             </tr>
             </tbody>
         </table>
@@ -85,30 +88,30 @@
     <div class="add_btn" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
         <a href='/rzd/portal/create' data-item='Добавить пользователя'>Добавить пользователя</a>
     </div>
-    <div class="table-container">
-        <table th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
-            <thead>
-            <tr>
-                <th>Имя</th>
-                <th>Фамилия</th>
-                <th>Email</th>
-                <th>Телефон</th>
-                <th>Информация</th>
-                <!-- Добавьте другие колонки по необходимости -->
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="user : ${usersList}">
-                <td class="column-with" th:text="${user.firstName}"></td>
-                <td class="column-with" th:text="${user.lastName}"></td>
-                <td class="column-with" th:text="${user.userName}"></td>
-                <td class="column-with" th:text="${user.phoneNumber}"></td>
-                <td class="column-with" ><a th:href="@{'/user/' + ${user.id}}"><span>Перейти</span></a>/<a th:href="@{'/user/delete/' + ${user.id}}"><span>Удалить</span></a></td>
-                <!-- Добавьте другие ячейки по необходимости -->
-            </tr>
-            </tbody>
-        </table>
-    </div>
+<!--    <div class="table-container">-->
+<!--        <table th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">-->
+<!--            <thead>-->
+<!--            <tr>-->
+<!--                <th>Имя</th>-->
+<!--                <th>Фамилия</th>-->
+<!--                <th>Email</th>-->
+<!--                <th>Телефон</th>-->
+<!--                <th>Информация</th>-->
+<!--                &lt;!&ndash; Добавьте другие колонки по необходимости &ndash;&gt;-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--            <tr th:each="user : ${usersList}">-->
+<!--                <td class="column-with" th:text="${user.firstName}"></td>-->
+<!--                <td class="column-with" th:text="${user.lastName}"></td>-->
+<!--                <td class="column-with" th:text="${user.userName}"></td>-->
+<!--                <td class="column-with" th:text="${user.phoneNumber}"></td>-->
+<!--                <td class="column-with" ><a th:href="@{'/user/' + ${user.id}}"><span>Перейти</span></a>/<a th:href="@{'/user/delete/' + ${user.id}}"><span>Удалить</span></a></td>-->
+<!--                &lt;!&ndash; Добавьте другие ячейки по необходимости &ndash;&gt;-->
+<!--            </tr>-->
+<!--            </tbody>-->
+<!--        </table>-->
+<!--    </div>-->
 
 </div>
 <script>

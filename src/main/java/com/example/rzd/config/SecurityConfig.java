@@ -36,7 +36,7 @@ public class SecurityConfig {
         return httpSecurity
                 .csrf(Customizer.withDefaults())
                 .authorizeHttpRequests(request->
-                        request.requestMatchers("/rzd/portal/user/create","/login","/css/**",
+                        request.requestMatchers("/rzd/portal/upload","/rzd/portal/user/create","/login","/css/**",
                                         "/js/**","/images/**", "/submitForm").permitAll()
                                 .anyRequest().authenticated())
                 .formLogin(form-> form.loginPage("/login")

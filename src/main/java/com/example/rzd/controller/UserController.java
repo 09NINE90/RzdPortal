@@ -49,7 +49,7 @@ public class UserController {
     }
     @GetMapping("/create")
     public String userCreate(Model model){
-        excelService.read();
+
         model.addAttribute("user",new UserDTO());
         return "signup";
     }
