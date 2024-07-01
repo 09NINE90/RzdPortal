@@ -39,13 +39,12 @@ public class HomeController {
     @GetMapping("/home")
     public String getUserProfile(Authentication authentication, Model model) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        List<Product> productList = new ArrayList<>();
-        productList = productService.getAllProducts();
+//        List<Product> productList = productService.getAllProducts();
         Long userId = userDetails.getId();
         model.addAttribute("firstName", userDetails.getFirstName());
         model.addAttribute("lastName", userDetails.getLastName());
         model.addAttribute("post", userDetails.getPost());
-        model.addAttribute("productList",productList);
+//        model.addAttribute("productList",productList);
 //        Thread thread = new Thread(() -> excelService.read("src/main/resources/excel/SKMTR.xlsx"));
 //        thread.start();
         return "mainPage";

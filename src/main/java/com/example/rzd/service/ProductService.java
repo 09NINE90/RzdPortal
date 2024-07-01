@@ -8,4 +8,8 @@ public interface ProductService {
     public void saveProduct(Product product);
 
     List<Product> getAllProducts();
+
+    List<Product> findByColumnNameContaining(String category);
+
+    boolean existsByProductId(Long productId);
 }

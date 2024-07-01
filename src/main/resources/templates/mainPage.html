@@ -2,6 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Главная</title>
     <link rel="stylesheet" th:href="@{/css/main.css}">
@@ -57,64 +59,180 @@
     <form class="form" method="post" th:action="@{/rzd/portal/upload}" enctype="multipart/form-data" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
         <div class="inputBox">
             <input type="file" name="file" accept=".xls,.xlsx"/>
-            <button type="submit">Загрузить</button>
+            <input type="submit" value="Загрузить"/>
         </div>
     </form>
-    <div class="table-container">
-        <table th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
-            <thead>
-            <tr>
-                <th>Код товара</th>
-                <th>Короткое название</th>
-                <th>Маркировка</th>
-                <th>Параметры</th>
-                <th>Производитель</th>
-<!--                <th>Обхват грудной клетки (см)</th>-->
-<!--                <th>Дата</th>-->
-                <!-- Добавьте другие колонки по необходимости -->
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="product : ${productList}">
-                <td class="column-with" th:text="${product.productId}"></td>
-                <td class="column-with" th:text="${product.productNameShort}"></td>
-                <td class="column-with" th:text="${product.productBrand}"></td>
-                <td class="column-with" th:text="${product.productSize}"></td>
-                <td class="column-with" th:text="${product.productVector}"></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
     <div class="add_btn" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
         <a href='/rzd/portal/create' data-item='Добавить пользователя'>Добавить пользователя</a>
     </div>
-<!--    <div class="table-container">-->
+<!--    <form class="form" method="post">-->
+<!--        <label for="search" style="color: white">Найти товар</label>-->
+<!--        <input id="search" type="search" placeholder="Название товара" autofocus required />-->
+<!--        <button type="submit">Искать</button>-->
+
+<!--    </form>-->
+    <input type="text" id="search-input">
+    <button id="search-button">Search</button>
+
+    <div class="table-container">
 <!--        <table th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">-->
 <!--            <thead>-->
 <!--            <tr>-->
-<!--                <th>Имя</th>-->
-<!--                <th>Фамилия</th>-->
-<!--                <th>Email</th>-->
-<!--                <th>Телефон</th>-->
-<!--                <th>Информация</th>-->
+<!--                <th>Код товара</th>-->
+<!--                <th>Короткое название</th>-->
+<!--                <th>Маркировка</th>-->
+<!--                <th>Параметры</th>-->
+
 <!--                &lt;!&ndash; Добавьте другие колонки по необходимости &ndash;&gt;-->
 <!--            </tr>-->
 <!--            </thead>-->
 <!--            <tbody>-->
-<!--            <tr th:each="user : ${usersList}">-->
-<!--                <td class="column-with" th:text="${user.firstName}"></td>-->
-<!--                <td class="column-with" th:text="${user.lastName}"></td>-->
-<!--                <td class="column-with" th:text="${user.userName}"></td>-->
-<!--                <td class="column-with" th:text="${user.phoneNumber}"></td>-->
-<!--                <td class="column-with" ><a th:href="@{'/user/' + ${user.id}}"><span>Перейти</span></a>/<a th:href="@{'/user/delete/' + ${user.id}}"><span>Удалить</span></a></td>-->
-<!--                &lt;!&ndash; Добавьте другие ячейки по необходимости &ndash;&gt;-->
+<!--            <tr th:each="product : ${productList}">-->
+<!--                <td class="column-with" th:text="${product.productId}"></td>-->
+<!--                <td class="column-with" th:text="${product.productNameShort}"></td>-->
+<!--                <td class="column-with" th:text="${product.productBrand}"></td>-->
+<!--                <td class="column-with" th:text="${product.productSize}"></td>-->
 <!--            </tr>-->
 <!--            </tbody>-->
 <!--        </table>-->
-<!--    </div>-->
+    </div>
 
 </div>
 <script>
+    const token = $("meta[name='_csrf']").attr("content");
+    const header = $("meta[name='_csrf_header']").attr("content");
+    const tableContainer = document.querySelector('.table-container');
+    const table = document.createElement('table');
+    const thead = document.createElement('thead');
+    const tbody = document.createElement('tbody');
+    function addToCart(product) {
+        // Ваша логика добавления продукта в корзину здесь
+        console.log('Добавлен в корзину:', product.productNameShort);
+    }
+    fetch('/products')
+        .then(response => response.json())
+        .then(data => {
+            // Заполнение thead
+            const theadRow = thead.insertRow();
+            theadRow.innerHTML ='<th>Код товара</th>\n'+
+                '            <th>Короткое название</th>\n'+
+                '            <th>Маркировка</th>\n'+
+                '            <th>Параметры</th>'+
+                '            <th>В корзину</th>'
+
+            ;
+            table.appendChild(thead);
+
+            // Заполнение tbody
+            data.forEach(product => {
+                const row = tbody.insertRow();
+                row.innerHTML =`<td>${product.productId}</td>
+                               <td>${product.productNameShort}</td>
+                                <td>${product.productBrand}</td>
+                                <td>${product.productSize}</td>
+                                <td><button class="add-to-cart-btn">Добавить</td>`
+                ;
+                const addToCartBtn = row.querySelector('.add-to-cart-btn');
+                addToCartBtn.addEventListener('click', () => {
+                    // Добавление продукта в корзину
+                    addToCart(product);
+                });
+            });
+
+            table.appendChild(tbody);
+            tableContainer.appendChild(table);
+        })
+        .catch(error => console.error('Ошибка получения данных:', error));
+    const searchInput = document.querySelector('#search-input');
+    const searchButton = document.querySelector('#search-button');
+    searchButton.addEventListener('click', function() {
+        const query = searchInput.value;
+        if (query.trim() !== '') {
+            tableContainer.innerHTML = '<span style="color: red;">Идет поиск...</span>';
+            fetch(`/searchProducts?query=${query}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Очистка таблицы перед добавлением новых данных
+                    tbody.innerHTML = '';
+
+                    data.forEach(product => {
+                        const row = tbody.insertRow();
+                        row.innerHTML =`<td>${product.productId}</td>
+                               <td>${product.productNameShort}</td>
+                                <td>${product.productBrand}</td>
+                                <td>${product.productSize}</td>
+                                <td><button class="add-to-cart-btn">Добавить</td>`
+                        ;
+                        const addToCartBtn = row.querySelector('.add-to-cart-btn');
+                        addToCartBtn.addEventListener('click', () => {
+                            // Добавление продукта в корзину
+                            addToCart(product);
+                        });
+                    });
+
+                    table.appendChild(tbody);
+                    tableContainer.innerHTML = ''; // Очистить сообщение о поиске
+                    tableContainer.appendChild(table);
+                });
+        }
+    });
+    searchInput.addEventListener('input', function() {
+        const query = searchInput.value;
+        if (query.trim() !== '') {
+            tableContainer.innerHTML = '<span style="color: red;">Идет поиск...</span>';
+            fetch(`/searchProducts?query=${query}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Очистка таблицы перед добавлением новых данных
+                    tbody.innerHTML = '';
+
+                    data.forEach(product => {
+                        const row = tbody.insertRow();
+                        row.innerHTML =`<td>${product.productId}</td>
+                               <td>${product.productNameShort}</td>
+                                <td>${product.productBrand}</td>
+                                <td>${product.productSize}</td>
+                                <td><button class="add-to-cart-btn">Добавить</td>`
+                        ;
+                        const addToCartBtn = row.querySelector('.add-to-cart-btn');
+                        addToCartBtn.addEventListener('click', () => {
+                            // Добавление продукта в корзину
+                            addToCart(product);
+                        });
+                    });
+
+                    table.appendChild(tbody);
+                    tableContainer.innerHTML = ''; // Очистить сообщение о поиске
+                    tableContainer.appendChild(table);
+                });
+        }else {
+            fetch('/products')
+                .then(response => response.json())
+                .then(data => {
+
+                    // Заполнение tbody
+                    data.forEach(product => {
+                        const row = tbody.insertRow();
+                        row.innerHTML =`<td>${product.productId}</td>
+                               <td>${product.productNameShort}</td>
+                                <td>${product.productBrand}</td>
+                                <td>${product.productSize}</td>
+                                <td><button class="add-to-cart-btn">Добавить</td>`
+                        ;
+                        const addToCartBtn = row.querySelector('.add-to-cart-btn');
+                        addToCartBtn.addEventListener('click', () => {
+                            // Добавление продукта в корзину
+                            addToCart(product);
+                        });
+                    });
+
+                    table.appendChild(tbody);
+                    tableContainer.appendChild(table);
+                })
+                .catch(error => console.error('Ошибка получения данных:', error));
+        }
+    });
+
     let condition = true;
 
     function forward() {

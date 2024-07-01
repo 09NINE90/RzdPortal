@@ -24,6 +24,16 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getAllProducts() {
-        return productsRepository.findAll();
+        return productsRepository.findFirst30();
+    }
+
+    @Override
+    public List<Product> findByColumnNameContaining(String query) {
+        return productsRepository.findByProductNameContaining(query);
+    }
+
+    @Override
+    public boolean existsByProductId(Long productId) {
+        return productsRepository.existsByProductId(productId);
     }
 }

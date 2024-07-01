@@ -13,9 +13,10 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
+    @org.hibernate.annotations.Index(name = "idx_productId")
     private long productId; // id товара // id в таблице 7
     @Column(columnDefinition = "TEXT")
+    @org.hibernate.annotations.Index(name = "idx_productName")
     private String productName; // название товара // id в таблице 8
     private String productBrand; // маркировка товара // id в таблице 9
     @Column(columnDefinition = "TEXT")

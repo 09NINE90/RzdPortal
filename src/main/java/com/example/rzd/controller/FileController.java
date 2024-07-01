@@ -7,10 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 @Controller
 @RequestMapping("/rzd/portal")
@@ -23,15 +20,35 @@ public class FileController {
     @SneakyThrows
     @PostMapping("/upload")
     public String handleFileUpload(@RequestParam("file") MultipartFile file) throws IOException {
+        long startTime = System.currentTimeMillis();
         InputStream in = file.getInputStream();
+        BufferedInputStream bis = new BufferedInputStream(in);
+
         FileOutputStream f = new FileOutputStream("src/main/resources/excel/" + file.getOriginalFilename());
-        int ch = 0;
-        while ((ch = in.read()) != -1) {
-            f.write(ch);
+        BufferedOutputStream bos = new BufferedOutputStream(f);
+
+        byte[] buffer = new byte[1024]; // Размер буфера, можно настроить под свои нужды
+        int bytesRead;
+        while ((bytesRead = bis.read(buffer)) != -1) {
+            bos.write(buffer, 0, bytesRead);
         }
-        f.flush();
-        f.close();
-        System.out.println("message File: " + file.getOriginalFilename() + " has been uploaded successfully!");
+
+        bos.flush();
+        bos.close();
+        bis.close();
+//        InputStream in = file.getInputStream();
+//        FileOutputStream f = new FileOutputStream("src/main/resources/excel/" + file.getOriginalFilename());
+//        int ch = 0;
+//        while ((ch = in.read()) != -1) {
+//            f.write(ch);
+//        }
+//        f.flush();
+//        f.close();
+        long endTime = System.currentTimeMillis();
+        long elapsedTime = endTime - startTime;
+        double seconds = (double) elapsedTime / 1000;
+        System.out.println("File: " + file.getOriginalFilename() + " успешно загружен! Время - " + seconds);
+        System.out.println("Начинается загрузка данных из файла в БД");
         Thread thread = new Thread(() -> excelService.read("src/main/resources/excel/" + file.getOriginalFilename()));
         thread.start();
 
