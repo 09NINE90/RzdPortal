@@ -3,7 +3,6 @@ package com.example.rzd.service.impl;
 import com.example.rzd.entity.Product;
 import com.example.rzd.repository.ProductsRepository;
 import com.example.rzd.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,4 +35,10 @@ public class ProductServiceImpl implements ProductService {
     public boolean existsByProductId(Long productId) {
         return productsRepository.existsByProductId(productId);
     }
+
+    @Override
+    public Product getProductById(long id) {
+        return productsRepository.findById(id).orElse(null);
+    }
+
 }

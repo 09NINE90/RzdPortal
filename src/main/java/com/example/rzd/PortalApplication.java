@@ -17,6 +17,7 @@ public class PortalApplication {
 //        factory.setMaxRequestSize(DataSize.parse("20000KB"));
 //        return factory.createMultipartConfig();
 //    }
+
     public static void main(String[] args) {
         SpringApplication.run(PortalApplication.class, args);
 

@@ -12,4 +12,6 @@ public interface ProductService {
     List<Product> findByColumnNameContaining(String category);
 
     boolean existsByProductId(Long productId);
+
+    Product getProductById(long id);
 }

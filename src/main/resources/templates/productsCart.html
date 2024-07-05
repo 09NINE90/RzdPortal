@@ -48,29 +48,12 @@
 </div>
 <div class="profile">
     <h2>Главная <a href='/rzd/portal/user/logout' data-item='выйти' th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">выйти</a></h2>
-    <div class="contact">
-        <p>Имя: <span th:text="${firstName}"></span></p>
-        <p>Фамилия: <span th:text="${lastName}"></span></p>
-        <p>Должность: <span th:text="${post}"></span></p>
-    </div>
-    <div class="add_btn" th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}">
-        <a href='/api/v1/createPhysicalParameters' data-item='Добавить данные в таблицу'>Добавить данные в таблицу</a>
-    </div>
-    <form class="form" method="post" th:action="@{/rzd/portal/upload}" enctype="multipart/form-data" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
-        <div class="inputBox">
-            <input type="file" name="file" accept=".xls,.xlsx"/>
-            <input type="submit" value="Загрузить"/>
-        </div>
-    </form>
-    <div class="add_btn" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
-        <a href='/rzd/portal/create' data-item='Добавить пользователя'>Добавить пользователя</a>
-    </div>
-    <a href='/rzd/portal/productsCart'>КОРЗИНА</a>
-    <input type="text" id="search-input">
-    <button id="search-button">Search</button>
+    <a href='/rzd/portal/home'>НАЗАД</a>
+<!--    <input type="text" id="search-input">-->
+<!--    <button id="search-button">Search</button>-->
     <div class="table-container"></div>
 </div>
-<script th:src="@{/js/product.js}"></script>
+<script th:src="@{/js/cart.js}"></script>
 <script>
     let condition = true;
     function forward() {

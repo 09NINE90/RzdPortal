@@ -1,5 +1,6 @@
 package com.example.rzd.entity;
 
+import com.example.rzd.dto.CustomUserDetails;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;

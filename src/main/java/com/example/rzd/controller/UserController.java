@@ -37,9 +37,7 @@ public class UserController {
     }
     @GetMapping("/{userId}")
     public String userCreate(@PathVariable("userId") Long id, Model model){
-        Optional<User> userOptional = userService.getUserById(id);
-        User user = userOptional.get();
-
+        User user = userService.getUserById(id);
         return "userPage";
     }
     @GetMapping("/delete/{userId}")
