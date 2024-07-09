@@ -10,6 +10,9 @@ public interface CartService {
     void saveProductCart(Cart cart);
 
     public List<Cart> getProductsInCartForUser(User user);
-
     Cart findCartByUserAndProduct(User user, Product product);
+
+    void deleteById(Long id);
+
+    Cart findEntityWithNonEmptyValues(Long id);
 }

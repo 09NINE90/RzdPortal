@@ -5,7 +5,7 @@
     <meta th:name="_csrf" th:content="${_csrf.token}"/>
     <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Главная</title>
+    <title>Корзина</title>
     <link rel="stylesheet" th:href="@{/css/main.css}">
     <link
             rel="stylesheet"
@@ -47,10 +47,16 @@
 
 </div>
 <div class="profile">
-    <h2>Главная <a href='/rzd/portal/user/logout' data-item='выйти' th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">выйти</a></h2>
-    <a href='/rzd/portal/home'>НАЗАД</a>
+    <h2>Корзина <a href='/rzd/portal/user/logout' data-item='выйти' th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">выйти</a></h2>
+    <div class="add_btn" >
+        <a href='/rzd/portal/home'>НАЗАД</a>
+    </div>
+
 <!--    <input type="text" id="search-input">-->
 <!--    <button id="search-button">Search</button>-->
+    <div class="add_btn" id="submit-button">
+        <a data-item='Сделать заказ'>Сделать заказ</a>
+    </div>
     <div class="table-container"></div>
 </div>
 <script th:src="@{/js/cart.js}"></script>

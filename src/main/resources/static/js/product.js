@@ -50,6 +50,11 @@ function getProducts(){
                     // Добавление продукта в корзину
                     const requestData = {
                         productCount: 1,
+                        month:1,
+                        reason:' ',
+                        price: 0,
+                        sum: 0,
+                        quarter: 1,
                         product: product,
                     }
                     fetch('/addProduct', {

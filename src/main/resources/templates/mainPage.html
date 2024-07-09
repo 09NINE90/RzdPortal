@@ -65,7 +65,13 @@
     <div class="add_btn" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
         <a href='/rzd/portal/create' data-item='Добавить пользователя'>Добавить пользователя</a>
     </div>
-    <a href='/rzd/portal/productsCart'>КОРЗИНА</a>
+    <div class="add_btn">
+        <a href='/rzd/portal/productsCart'>КОРЗИНА</a>
+    </div>
+    <div class="add_btn">
+        <a href='/rzd/portal/orders'>МОИ ЗАКАЗЫ</a>
+    </div>
+
     <input type="text" id="search-input">
     <button id="search-button">Search</button>
     <div class="table-container"></div>

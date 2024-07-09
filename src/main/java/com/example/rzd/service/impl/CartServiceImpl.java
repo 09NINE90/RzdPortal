@@ -36,5 +36,15 @@ public class CartServiceImpl implements CartService {
         return cartRepository.findByUserAndProduct(user,product);
     }
 
+    @Override
+    public void deleteById(Long id) {
+        cartRepository.deleteById(id);
+    }
+
+    @Override
+    public Cart findEntityWithNonEmptyValues(Long id) {
+        return cartRepository.findEntityWithNonEmptyValues(id);
+    }
+
 
 }
