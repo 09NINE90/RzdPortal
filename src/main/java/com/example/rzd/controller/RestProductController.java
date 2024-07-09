@@ -1,33 +1,30 @@
 package com.example.rzd.controller;
 
 import com.example.rzd.dto.CustomUserDetails;
-import com.example.rzd.dto.UserDTO;
-import com.example.rzd.entity.Cart;
-import com.example.rzd.entity.Product;
-import com.example.rzd.entity.ProductCart;
-import com.example.rzd.entity.User;
+import com.example.rzd.entity.*;
 import com.example.rzd.service.CartService;
+import com.example.rzd.service.OrderService;
 import com.example.rzd.service.ProductService;
 import com.example.rzd.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class RestProductController {
-    private final ProductService productService;
+    final ProductService productService;
     final
     UserService userService;
     final
     CartService cartService;
+    final OrderService orderService;
 
-    public RestProductController(ProductService productService, CartService cartService, UserService userService) {
+    public RestProductController(ProductService productService, CartService cartService, UserService userService, OrderService orderService) {
         this.productService = productService;
         this.cartService = cartService;
         this.userService = userService;
+        this.orderService = orderService;
     }
 
     @GetMapping("/products")
@@ -42,13 +39,20 @@ public class RestProductController {
         return cartService.getProductsInCartForUser(user);
     }
 
+    @GetMapping("/getOrders")
+    public List<Order> getUserOrders(Authentication authentication){
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        User user = userService.getUserById(userDetails.getId()); // Получение управляемого экземпляра User
+        return orderService.getUsersOrders(user);
+    }
+
     @GetMapping("/searchProducts")
-    public List<Product> search( @RequestParam String query) {
+    public List<Product> search(@RequestParam String query) {
         return productService.findByColumnNameContaining(query);
     }
 
     @PostMapping("/addProduct")
-    public void addProduct(Authentication authentication, @RequestBody ProductCart productCart){
+    public void addProduct(Authentication authentication, @RequestBody ProductCart productCart) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         User user = userService.getUserById(userDetails.getId()); // Получение управляемого экземпляра User
 
@@ -68,6 +72,10 @@ public class RestProductController {
             cart.setUser(user);
             cart.setProduct(product);
             cart.setProductCount(productCart.getProductCount());
+            cart.setPrice(productCart.getPrice());
+            cart.setMonth(productCart.getMonth());
+            cart.setQuarter(productCart.getQuarter());
+            cart.setReason(productCart.getReason());
 
             try {
                 cartService.saveProductCart(cart);
@@ -77,5 +85,51 @@ public class RestProductController {
             }
         }
 //        List<Cart> productsInCart = cartService.getProductsInCartForUser(user);
+    }
+    @PostMapping("/deleteProductCart")
+    public void deleteProductCart(Authentication authentication, @RequestBody Cart cart){
+        cartService.deleteById(cart.getId());
+    }
+    @PostMapping("/editProductCart")
+    public void editProductCart(Authentication authentication, @RequestBody ProductCart productCart) {
+        System.out.println("ddd");
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        User user = userService.getUserById(userDetails.getId()); // Получение управляемого экземпляра User
+
+
+        Product product = productService.getProductById(productCart.getProduct().getId()); // Получение управляемого экземпляра Product
+
+        Cart existingCartEntry = cartService.findCartByUserAndProduct(user, product);
+        if (existingCartEntry != null) {
+            // Если продукт уже есть в корзине, увеличиваем количество товара
+            existingCartEntry.setProductCount(productCart.getProductCount());
+            existingCartEntry.setReason(productCart.getReason());
+            existingCartEntry.setPrice(productCart.getPrice());
+            existingCartEntry.setSum(productCart.getSum());
+            existingCartEntry.setQuarter(productCart.getQuarter());
+            existingCartEntry.setMonth(productCart.getMonth());
+            cartService.saveProductCart(existingCartEntry);
+            System.out.println("Обновлены параметры товара ID: " + existingCartEntry.getId());
+        }
+
+    }
+
+    @PostMapping("/createOder")
+    public void createOder(Authentication authentication,@RequestBody Cart cart){
+        if (cartService.findEntityWithNonEmptyValues(cart.getId()) != null){
+            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+            User user = userService.getUserById(userDetails.getId()); // Получение управляемого экземпляра User
+
+            Product product = productService.getProductById(cart.getProduct().getId()); // Получение управляемого экземпляра Product
+
+            Cart existingCartEntry = cartService.findCartByUserAndProduct(user, product);
+            Order order = new Order();
+            orderService.saveOrder(order.getOrderFromCart(existingCartEntry));
+            cartService.deleteById(existingCartEntry.getId());
+
+        }
+
+
+
     }
 }

@@ -17,10 +17,16 @@ public class Cart {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id")
     private Product product;
-    private int productCount;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    private int productCount;
+    private String reason;
+    private Double price;
+    private Double sum;
+    private byte month;
+    private byte quarter;
 }
 
 

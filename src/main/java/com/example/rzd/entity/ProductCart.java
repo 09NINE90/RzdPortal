@@ -10,5 +10,10 @@ import lombok.NoArgsConstructor;
 public class ProductCart {
     private Product product;
     private int productCount;
+    private String reason;
+    private Double price;
+    private Double sum;
+    private byte month;
+    private byte quarter;
 //    private Cart cart;
 }
