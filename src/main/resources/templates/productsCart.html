@@ -5,9 +5,8 @@
     <meta th:name="_csrf" th:content="${_csrf.token}"/>
     <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Главная</title>
+    <title>Корзина</title>
     <link rel="stylesheet" th:href="@{/css/main.css}">
-
     <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
@@ -28,17 +27,11 @@
             <div class="menu_item"><a href='/rzd/portal/orders' data-item='МОИ ЗАКАЗЫ'>МОИ ЗАКАЗЫ</a></div>
             <div class="menu_item"><a href='/rzd/portal/user/logout' data-item='выйти'>выйти</a></div>
         </div>
-        <div th:if="${#authorization.expression('hasRole(''ROLE_RECEPTIONIST'')')}" class="menu">
-            <div class="menu_item"><a href='/rzd/portal/home' data-item='главная'>главная</a></div>
-            <div class="menu_item"><a href='/rzd/portal/allOrders' data-item='заказы'>заказы</a></div>
-            <div class="menu_item"><a href='/rzd/portal/user/logout' data-item='выйти'>выйти</a></div>
-        </div>
 
         <div class="menu-small">
             <div class="menu_small_item"><a href='/rzd/portal/home' data-item='главная'>главная</a></div>
-            <div class="menu_small_item"><a href='#' data-item='товары'>товары</a></div>
-            <div class="menu_small_item"><a href='#' data-item='услуги'>услуги</a></div>
-            <div class="menu_small_item"><a href='#' data-item='задачи'>задачи</a></div>
+            <div class="menu_small_item"><a href='/rzd/portal/productsCart' data-item='КОРЗИНА'>КОРЗИНА</a></div>
+            <div class="menu_small_item"><a href='/rzd/portal/orders' data-item='МОИ ЗАКАЗЫ'>МОИ ЗАКАЗЫ</a></div>
             <div class="menu_small_item"><a href='/rzd/portal/user/logout' data-item='выйти'>выйти</a></div>
 
         </div>
@@ -52,41 +45,17 @@
 
 </div>
 <div class="profile">
-    <h2>Главная</h2>
-    <div class="contact">
-        <p>Имя: <span th:text="${firstName}"></span></p>
-        <p>Фамилия: <span th:text="${lastName}"></span></p>
-        <p>Отдел: <span th:text="${post}"></span></p>
-    </div>
-    <div class="add_btn" th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}">
-        <a href='/api/v1/createPhysicalParameters' data-item='Добавить данные в таблицу'>Добавить данные в таблицу</a>
-    </div>
-    <form class="form" method="post" th:action="@{/rzd/portal/upload}" enctype="multipart/form-data" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
-        <div class="inputBox">
-            <input type="file" name="file" accept=".xls,.xlsx"/>
-            <input type="submit" value="Загрузить"/>
-        </div>
-    </form>
-    <div class="add_btn" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
-        <a href='/rzd/portal/create' data-item='Добавить пользователя'>Добавить пользователя</a>
-    </div>
-<!--    <div class="add_btn" th:if="${#authorization.expression('hasRole(''ROLE_INITIATOR'')')}">-->
-<!--        <a href='/rzd/portal/productsCart'>КОРЗИНА</a>-->
-<!--    </div>-->
-<!--    <div class="add_btn" th:if="${#authorization.expression('hasRole(''ROLE_INITIATOR'')')}">-->
-<!--        <a href='/rzd/portal/orders'>МОИ ЗАКАЗЫ</a>-->
-<!--    </div>-->
-<!--    <div class="add_btn" th:if="${#authorization.expression('hasRole(''ROLE_RECEPTIONIST'')')}">-->
-<!--        <a href='/rzd/portal/allOrders'>ВСЕ ЗАКАЗЫ</a>-->
-<!--    </div>-->
-    <div class="search-container">
-        <button class="search-button" id="search-button">Поиск</button>
-        <input class="search-input" type="text" id="search-input">
+    <h2>Корзина</h2>
+    <div class="add_btn" >
+        <a href='/rzd/portal/home'>НАЗАД</a>
     </div>
 
+    <div class="add_btn" id="submit-button">
+        <a data-item='Сделать заказ'>Сделать заказ</a>
+    </div>
     <div class="table-container"></div>
 </div>
-<script th:src="@{/js/product.js}"></script>
+<script th:src="@{/js/cart.js}"></script>
 <script>
     let condition = true;
     function forward() {

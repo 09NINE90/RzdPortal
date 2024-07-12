@@ -3,6 +3,7 @@ package com.example.rzd.controller;
 import com.example.rzd.dto.CustomUserDetails;
 import com.example.rzd.dto.UserDTO;
 import com.example.rzd.entity.*;
+import com.example.rzd.service.ExcelService;
 import com.example.rzd.service.MailService;
 import com.example.rzd.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -18,10 +19,16 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RequestMapping("/rzd/portal/user")
 public class UserController {
-    private final UserService userService;
+    private UserService userService;
+    private ExcelService excelService;
+    MailService mailService;
 
     @Autowired
-    MailService mailService;
+    public UserController(ExcelService excelService, MailService mailService, UserService userService) {
+        this.excelService = excelService;
+        this.mailService = mailService;
+        this.userService = userService;
+    }
 
     @GetMapping("/logout")
     public String logout() {
@@ -30,9 +37,7 @@ public class UserController {
     }
     @GetMapping("/{userId}")
     public String userCreate(@PathVariable("userId") Long id, Model model){
-        Optional<User> userOptional = userService.getUserById(id);
-        User user = userOptional.get();
-
+        User user = userService.getUserById(id);
         return "userPage";
     }
     @GetMapping("/delete/{userId}")
@@ -42,6 +47,7 @@ public class UserController {
     }
     @GetMapping("/create")
     public String userCreate(Model model){
+
         model.addAttribute("user",new UserDTO());
         return "signup";
     }

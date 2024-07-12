@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-public class CustomUserDetails implements UserDetails {
+public class CustomUserDetails extends User implements UserDetails {
     private final User user;
 
     public CustomUserDetails(User user) {
@@ -53,7 +53,7 @@ public class CustomUserDetails implements UserDetails {
         return true;
     }
 
-    public Long getId() {
+    public long getId() {
         return user.getId();
     }
 
