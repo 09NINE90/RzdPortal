@@ -46,6 +46,11 @@ public class RestProductController {
         return orderService.getUsersOrders(user);
     }
 
+    @GetMapping("/getAllOrders")
+    public List<Order> getAllOrders(){
+        return orderService.getAllOrders();
+    }
+
     @GetMapping("/searchProducts")
     public List<Product> search(@RequestParam String query) {
         return productService.findByColumnNameContaining(query);
@@ -92,7 +97,6 @@ public class RestProductController {
     }
     @PostMapping("/editProductCart")
     public void editProductCart(Authentication authentication, @RequestBody ProductCart productCart) {
-        System.out.println("ddd");
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         User user = userService.getUserById(userDetails.getId()); // Получение управляемого экземпляра User
 
@@ -114,6 +118,11 @@ public class RestProductController {
 
     }
 
+    @PostMapping("/editOrderStatus")
+    public void editOrderStatus(@RequestBody Order order) {
+        orderService.changeOrderStatus(order.getId(), order.getStatus());
+    }
+
     @PostMapping("/createOder")
     public void createOder(Authentication authentication,@RequestBody Cart cart){
         if (cartService.findEntityWithNonEmptyValues(cart.getId()) != null){
@@ -128,8 +137,15 @@ public class RestProductController {
             cartService.deleteById(existingCartEntry.getId());
 
         }
+    }
 
+    @GetMapping("/getOrdersByStatus")
+    public List<Order> getOrdersByStatus(@RequestParam String query){
+        return orderService.getOrdersByStatus(query);
+    }
 
-
+    @GetMapping("/getOrdersByQuarter")
+    public List<Order> getOrdersByStatus(@RequestParam int query){
+        return orderService.getOrdersByQuarter(query);
     }
 }

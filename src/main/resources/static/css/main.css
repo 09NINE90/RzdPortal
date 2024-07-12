@@ -34,12 +34,12 @@ a{
     padding-top: 20px;
     padding-bottom: 200px;
     margin-top: 50px;
-    padding-inline: 10%;
+    padding-inline: 5%;
     display: flex;
     justify-content: center;
     flex-direction: column;
     position: relative;
-    width: 90%;
+    width: 87%;
     background: #000;
     border-radius: 20px;
     box-shadow: 0 15px 35px rgb(0, 0, 6);
@@ -121,6 +121,35 @@ nav {
     }
 }
 
+.filter-container{
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.search-container{
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.search-container button{
+    width: 5%;
+    margin-right: 10px;
+}
+
+.search-container input{
+    position: relative;
+    width: 60%;
+    background: #333;
+    border: none;
+    outline: none;
+    padding: 15px 10px;
+    border-radius: 4px;
+    color: #fff;
+    font-weight: 500;
+    font-size: 1em;
+}
 
 table{
     padding-top: 20px;

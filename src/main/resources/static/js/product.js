@@ -43,7 +43,7 @@ function getProducts(){
                                <td>${product.productNameShort}</td>
                                 <td>${product.productBrand}</td>
                                 <td>${product.productSize}</td>
-                                <td><button class="add-to-cart-btn">Добавить</td>`
+                                <td ><button class="add-to-cart-btn">Добавить</td>`
                 ;
                 const addToCartBtn = row.querySelector('.add-to-cart-btn');
                 addToCartBtn.addEventListener('click', () => {
@@ -85,7 +85,7 @@ function getProducts(){
 
 function searchProducts(query){
     if (query.trim() !== '') {
-        tableContainer.innerHTML = `<span style="color: red;">Идет поиск...</span>`;
+        tableContainer.innerHTML = `<span style="color: red; text-align: center;">Идет поиск...</span>`;
         fetch(`/searchProducts?query=${query}`)
             .then(response => response.json())
             .then(data => {

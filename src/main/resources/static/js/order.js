@@ -6,6 +6,7 @@ thead = document.createElement('thead');
 tbody = document.createElement('tbody');
 const theadRow = thead.insertRow();
 theadRow.innerHTML =
+    '            <th>Отдел</th>\n'+
     '            <th>Короткое название</th>\n'+
     '            <th>Маркировка</th>\n'+
     '            <th>Параметры</th>'+
@@ -29,6 +30,7 @@ function getOrders(){
                 const row = tbody.insertRow();
                 row.setAttribute('data-cart', JSON.stringify(order)); // Добавляем объект cart как атрибут строки
                 row.innerHTML =`
+                                <td>${order.user.post}</td>
                                 <td>${order.product.productNameShort}</td>
                                 <td>${order.product.productBrand}</td>
                                 <td>${order.product.productSize}</td>

@@ -42,7 +42,7 @@ function getProductsCart(){
                                         <button class="increment" style="padding: 3px; padding-inline: 5px">+</button></td>
                                 <td><input class="product-price" type="text" style="width: 50px" value="${cart.price}"></td>
                                 <td class="product-multiplication">${cart.sum}</td>
-                                <td><select class="month" name="numbers" class="selectNumbers">
+                                <td><select name="numbers" class="selectNumbers">
                                     <option value="${cart.month}">${cart.month}</option> 
                                     <option value="1">1</option>
                                     <option value="2">2</option>
@@ -63,7 +63,7 @@ function getProductsCart(){
                 const incrementButton = row.querySelector('.increment');
                 const selectElement = row.querySelector('.selectNumbers');
                 const textArea = row.querySelector('.reason')
-                textArea.addEventListener('blur', function() {
+                textArea.addEventListener('blur', () => {
                     const month = row.querySelector('.month').value
                     const reason = row.querySelector('.reason').value
                     let count = parseInt(productCountCell.textContent);
@@ -74,7 +74,7 @@ function getProductsCart(){
 
                 });
 
-                decrementButton.addEventListener('click', function() {
+                decrementButton.addEventListener('click', () => {
                     const month = row.querySelector('.month').value
                     const reason = row.querySelector('.reason').value
                     let count = parseInt(productCountCell.textContent);
@@ -88,7 +88,7 @@ function getProductsCart(){
                     }
                 });
 
-                incrementButton.addEventListener('click', function() {
+                incrementButton.addEventListener('click', () =>{
                     const month = row.querySelector('.month').value
                     const reason = row.querySelector('.reason').value
                     let count = parseInt(productCountCell.textContent);

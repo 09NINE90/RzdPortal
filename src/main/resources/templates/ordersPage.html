@@ -23,9 +23,8 @@
   <div class="container">
     <div th:if="${#authorization.expression('hasRole(''ROLE_INITIATOR'')')}" class="menu">
       <div class="menu_item"><a href='/rzd/portal/home' data-item='главная'>главная</a></div>
-      <div class="menu_item"><a href='#' data-item='товары'>товары</a></div>
-      <div class="menu_item"><a href='#' data-item='услуги'>услуги</a></div>
-      <div class="menu_item"><a href='#' data-item='задачи'>задачи</a></div>
+      <div class="menu_item"><a href='/rzd/portal/productsCart' data-item='КОРЗИНА'>КОРЗИНА</a></div>
+      <div class="menu_item"><a href='/rzd/portal/orders' data-item='МОИ ЗАКАЗЫ'>МОИ ЗАКАЗЫ</a></div>
       <div class="menu_item"><a href='/rzd/portal/user/logout' data-item='выйти'>выйти</a></div>
     </div>
 

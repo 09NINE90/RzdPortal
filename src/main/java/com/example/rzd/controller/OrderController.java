@@ -11,4 +11,7 @@ public class OrderController {
     public String getOrders(){
         return "ordersPage";
     }
+
+    @GetMapping("/allOrders")
+    public String getAllOrders(){return "allOrdersPage";}
 }

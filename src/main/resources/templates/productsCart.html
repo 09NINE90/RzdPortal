@@ -23,17 +23,15 @@
     <div class="container">
         <div th:if="${#authorization.expression('hasRole(''ROLE_INITIATOR'')')}" class="menu">
             <div class="menu_item"><a href='/rzd/portal/home' data-item='главная'>главная</a></div>
-            <div class="menu_item"><a href='#' data-item='товары'>товары</a></div>
-            <div class="menu_item"><a href='#' data-item='услуги'>услуги</a></div>
-            <div class="menu_item"><a href='#' data-item='задачи'>задачи</a></div>
+            <div class="menu_item"><a href='/rzd/portal/productsCart' data-item='КОРЗИНА'>КОРЗИНА</a></div>
+            <div class="menu_item"><a href='/rzd/portal/orders' data-item='МОИ ЗАКАЗЫ'>МОИ ЗАКАЗЫ</a></div>
             <div class="menu_item"><a href='/rzd/portal/user/logout' data-item='выйти'>выйти</a></div>
         </div>
 
         <div class="menu-small">
             <div class="menu_small_item"><a href='/rzd/portal/home' data-item='главная'>главная</a></div>
-            <div class="menu_small_item"><a href='#' data-item='товары'>товары</a></div>
-            <div class="menu_small_item"><a href='#' data-item='услуги'>услуги</a></div>
-            <div class="menu_small_item"><a href='#' data-item='задачи'>задачи</a></div>
+            <div class="menu_small_item"><a href='/rzd/portal/productsCart' data-item='КОРЗИНА'>КОРЗИНА</a></div>
+            <div class="menu_small_item"><a href='/rzd/portal/orders' data-item='МОИ ЗАКАЗЫ'>МОИ ЗАКАЗЫ</a></div>
             <div class="menu_small_item"><a href='/rzd/portal/user/logout' data-item='выйти'>выйти</a></div>
 
         </div>
@@ -47,13 +45,11 @@
 
 </div>
 <div class="profile">
-    <h2>Корзина <a href='/rzd/portal/user/logout' data-item='выйти' th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">выйти</a></h2>
+    <h2>Корзина</h2>
     <div class="add_btn" >
         <a href='/rzd/portal/home'>НАЗАД</a>
     </div>
 
-<!--    <input type="text" id="search-input">-->
-<!--    <button id="search-button">Search</button>-->
     <div class="add_btn" id="submit-button">
         <a data-item='Сделать заказ'>Сделать заказ</a>
     </div>
