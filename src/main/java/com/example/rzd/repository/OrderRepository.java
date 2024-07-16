@@ -28,4 +28,8 @@ public interface OrderRepository extends JpaRepository<Order,Long> {
     @Modifying
     @Query(value = "UPDATE products_order SET status = :status  WHERE id = :order_id", nativeQuery = true)
     void updateStatusById(@Param("order_id") Long id, @Param("status") String status);
+
+    @Modifying
+    @Query(value = "UPDATE products_order SET comment = :comment  WHERE id = :order_id", nativeQuery = true)
+    void updateCommentById(@Param("order_id") Long id, @Param("comment") String comment);
 }

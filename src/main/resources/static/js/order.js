@@ -40,10 +40,15 @@ function getOrders(){
                                 <td>${order.sum}</td>
                                 <td>${order.month}</td>
                                 <td>${order.quarter}</td>
-                                <td>${order.status}</td>
+                                <td class="status">${order.status}</td>
                                 
                                 
 `
+                const status = row.querySelector('.status')
+                if (`${order.status}` === 'Отказано' && `${order.comment}` !== null){
+                    status.innerHTML += `<br>Комментарий:<br>${order.comment}`
+                }
+
                 table.appendChild(tbody);
                 tableContainer.appendChild(table);
                 })

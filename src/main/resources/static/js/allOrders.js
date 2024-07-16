@@ -51,17 +51,48 @@ function getAllOrders(){
                                 <td>${order.sum}</td>
                                 <td>${order.month}</td>
                                 <td>${order.quarter}</td>
-                                <td><select class="status" name="status">
+                                <td class="status-column"><select class="status" name="status">
                                     <option value="${order.status}">${order.status}</option> 
                                     <option value="Отправлено">Отправлено</option>
                                     <option value="Принято">Принято</option>
                                     <option value="Отказано">Отказано</option>
                                     <option value="Выполнено">Выполнено</option></select></td>`;
                 const selectElement = row.querySelector('.status');
-
+                const status_column = row.querySelector('.status-column')
+                if (selectElement.value === 'Отказано'){
+                    status_column.innerHTML += `<textArea class="reason-refusal" placeholder="Почему?">${order.comment}</textArea>
+                                                    <button class="save-btn">Сохранить</button>`;
+                }
                 selectElement.addEventListener('change', () =>{
                     if (selectElement.value === 'Отказано'){
-                        console.log("Почему?")
+                        status_column.innerHTML += `<textArea class="reason-refusal" placeholder="Почему?">${order.comment}</textArea>
+                                                    <button class="save-btn">Сохранить</button>`;
+                        const save_btn = row.querySelector('.save-btn')
+                        save_btn.addEventListener('click', () =>{
+                            const reason_refusal = row.querySelector('.reason-refusal')
+                            const requestData = {
+                                id: `${order.id}`,
+                                comment : reason_refusal.value
+                            }
+                            fetch('/createComment', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': token
+                                },
+                                body: JSON.stringify(requestData)
+
+                            })
+                                .then(response => {
+                                    console.log(response)
+                                    // window.location.href = '/api/v1/getWorkoutPage/' + userId
+                                })
+                                .catch(error => {
+                                    console.error('Ошибка при отправке формы:', error);
+                                });
+
+                            console.log(requestData);
+                        })
                     }
                     const requestData = {
                         id: `${order.id}`,

@@ -25,6 +25,7 @@ public class Order {
     private byte month;
     private byte quarter;
     private String status;
+    private String comment;
 
     public Order getOrderFromCart(Cart cart){
         Order order= new Order();

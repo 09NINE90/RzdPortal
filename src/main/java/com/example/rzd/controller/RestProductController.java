@@ -123,10 +123,15 @@ public class RestProductController {
         orderService.changeOrderStatus(order.getId(), order.getStatus());
     }
 
+    @PostMapping("/createComment")
+    public void createComment(@RequestBody Order order) {
+        orderService.createComment(order.getId(), order.getComment());
+    }
+
     @PostMapping("/createOder")
     public void createOder(Authentication authentication,@RequestBody Cart cart){
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         if (cartService.findEntityWithNonEmptyValues(cart.getId()) != null){
-            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
             User user = userService.getUserById(userDetails.getId()); // Получение управляемого экземпляра User
 
             Product product = productService.getProductById(cart.getProduct().getId()); // Получение управляемого экземпляра Product

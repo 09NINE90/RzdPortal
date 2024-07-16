@@ -49,4 +49,10 @@ public class OrderServiceImpl implements OrderService {
     public void changeOrderStatus(Long id, String status) {
         orderRepository.updateStatusById(id, status);
     }
+
+    @Transactional
+    @Override
+    public void createComment(Long orderId, String comment) {
+        orderRepository.updateCommentById(orderId, comment);
+    }
 }

@@ -14,6 +14,6 @@ public interface OrderService {
     List<Order> getOrdersByStatus(String status);
     List<Order> getOrdersByQuarter(int quarter);
     void changeOrderStatus(Long id, String status);
-
+    void createComment(Long orderId, String comment);
 
 }

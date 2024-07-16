@@ -59,9 +59,12 @@ function getProductsCart(){
                                 </select></td>
                                 <td><button class="remove-from-cart-btn">Удалить</td>`
                 ;
+
                 const decrementButton = row.querySelector('.decrement');
                 const incrementButton = row.querySelector('.increment');
-                const textArea = row.querySelector('.reason')
+                const textArea = row.querySelector('.reason');
+                const selectElement = row.querySelector('.month');
+
                 textArea.addEventListener('blur', () => {
                     const month = row.querySelector('.month').value
                     const reason = row.querySelector('.reason').value
@@ -73,6 +76,15 @@ function getProductsCart(){
 
                 });
 
+                selectElement.addEventListener('change', () =>{
+                    const month = row.querySelector('.month').value
+                    const reason = row.querySelector('.reason').value
+                    let count = parseInt(productCountCell.textContent);
+                    const inputValue = parseFloat(inputPrice.value) || 0;
+                    const productCountValue = parseInt(productCountCell.textContent) || 0;
+                    multiplicationCell.textContent = inputValue * productCountValue;
+                    postEditProduct(count, month, reason, inputValue, multiplicationCell.textContent, cart.product)
+                });
                 decrementButton.addEventListener('click', () => {
                     const month = row.querySelector('.month').value
                     const reason = row.querySelector('.reason').value
@@ -112,6 +124,7 @@ function getProductsCart(){
                     })
                         .then(response => {
                             console.log(response)
+                            location.reload();
                             // window.location.href = '/api/v1/getWorkoutPage/' + userId
                         })
                         .catch(error => {
