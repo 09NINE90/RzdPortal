@@ -36,14 +36,7 @@ public class FileController {
         bos.flush();
         bos.close();
         bis.close();
-//        InputStream in = file.getInputStream();
-//        FileOutputStream f = new FileOutputStream("src/main/resources/excel/" + file.getOriginalFilename());
-//        int ch = 0;
-//        while ((ch = in.read()) != -1) {
-//            f.write(ch);
-//        }
-//        f.flush();
-//        f.close();
+
         long endTime = System.currentTimeMillis();
         long elapsedTime = endTime - startTime;
         double seconds = (double) elapsedTime / 1000;
